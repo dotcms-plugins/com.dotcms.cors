@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.dotcms:dotcms:5.2.6') { transitive = true }
+    compile('com.dotcms:dotcms:5.3.8') 
 
 }
 
@@ -23,9 +23,9 @@ jar {
     manifest {
         attributes (
                 'Bundle-Vendor': 'dotCMS',
-                'Bundle-Description': 'dotCMS - API Facade',
+                'Bundle-Description': 'dotCMS - Cors Headers',
                 'Bundle-DocURL': 'https://dotcms.com/',
-                'Bundle-Activator': 'com.dotcms.api.facade.Activator',
+                'Bundle-Activator': 'com.dotcms.cors.Activator',
                 'Import-Package': '*;version=0'
         )
     }
@@ -37,8 +37,8 @@ jar.finalizedBy 'fragmentJar'
 /////////////////////////
 
 ext {
-    bundleName = "dotCMS API Facade fragment"
-    bundleDescription = "dotCMS - API Facade fragment"
+    bundleName = "dotCMS Cors Headers fragment"
+    bundleDescription = "dotCMS - Cors Headers fragment"
     fragmentHost = "system.bundle; extension:=framework"
     bundleSymbolicName = "" //Auto generated based on the plugin jar
     bundleVersion = "" //Auto generated based on the plugin jar
