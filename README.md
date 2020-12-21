@@ -1,5 +1,5 @@
 # Add Arbitray Headers
-This plugin adds headers to selected incoming requests, based on a regex. While it was built for cors headers, it can be used to add arbitrary headers to requests, such as cache control headers.
+This plugin adds a web interceptor that appends headers to selected incoming requests, based on a regex. While it was built for cors headers, it can be used to add arbitrary headers to requests, such as cache control headers.
 
 
 ### To use this plugin
