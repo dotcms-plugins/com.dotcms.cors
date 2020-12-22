@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.dotcms:dotcms:5.3.8') 
+    compile('com.dotcms:dotcms:5.1.6') 
 
 }
 
