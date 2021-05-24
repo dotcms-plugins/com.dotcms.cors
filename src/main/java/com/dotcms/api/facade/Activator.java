@@ -15,6 +15,7 @@
 package com.dotcms.api.facade;
 
 
+import com.dotmarketing.filters.InterceptorFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.osgi.framework.BundleContext;
@@ -45,11 +46,9 @@ public final class Activator extends GenericBundleActivator {
         final FilterWebInterceptorProvider filterWebInterceptorProvider =
                         FilterWebInterceptorProvider.getInstance(Config.CONTEXT);
 
-        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(AutoLoginFilter.class);
+        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(InterceptorFilter.class);
 
         delegate.addFirst(interceptor);
-
-
 
         Logger.info(this.getClass(), "Starting API Facade Interceptor");
 
@@ -62,7 +61,7 @@ public final class Activator extends GenericBundleActivator {
         final FilterWebInterceptorProvider filterWebInterceptorProvider =
                         FilterWebInterceptorProvider.getInstance(Config.CONTEXT);
 
-        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(AutoLoginFilter.class);
+        final WebInterceptorDelegate delegate = filterWebInterceptorProvider.getDelegate(InterceptorFilter.class);
 
         delegate.remove(interceptor.getName(), true);
         unregisterConditionlets();

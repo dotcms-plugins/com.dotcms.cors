@@ -20,8 +20,6 @@ public class AddCorsHeaderResponse extends HttpServletResponseWrapper implements
 
     public AddCorsHeaderResponse(HttpServletResponse response) {
         super(response);
-
-
     }
 
 

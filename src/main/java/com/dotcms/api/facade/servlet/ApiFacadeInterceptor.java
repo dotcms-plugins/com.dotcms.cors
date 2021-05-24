@@ -16,23 +16,14 @@ import com.dotmarketing.util.Logger;
 public class ApiFacadeInterceptor implements WebInterceptor {
 
 
-    private final static String[] filters = {"/api/"};
-    private final static String allowUriRegex =  BundleConfigProperties.getProperty("com.dotcms.api.allowed.uri.regex", "/api/.*");
+    private final static String allowUriRegex = BundleConfigProperties.getProperty("com.dotcms.cors.uri.regex", "/api/.*");
 
     private final Pattern matchPattern;
-    private final char[] token;
+
     public ApiFacadeInterceptor() {
-        Logger.info(this.getClass(), "Starting API Facade - "  + allowUriRegex );
-        
-        matchPattern=Pattern.compile(allowUriRegex);
-        this.token =  BundleConfigProperties.getProperty("com.dotcms.api.token", "").toCharArray();
+        Logger.info(this.getClass().getName(), "Starting API Facade - " + allowUriRegex);
 
-    }
-
-
-    @Override
-    public final String[] getFilters() {
-        return filters;
+        matchPattern = Pattern.compile(allowUriRegex);
     }
 
     @Override
@@ -45,35 +36,31 @@ public class ApiFacadeInterceptor implements WebInterceptor {
     public Result intercept(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 
 
-        
-        if(!uriMatches(request) || noAuthorization(request)) {
+        if (!uriMatches(request)) {
             return Result.NEXT;
-            
         }
-        
-        System.out.println("we got an api request : " + request.getRequestURI());
 
-        
+        Logger.info(this.getClass().getName(),"we got an api request : " + request.getRequestURI());
+
+        final String allowOrigin = BundleConfigProperties.getProperty("Access-Control-Allow-Origin", "*");
+        final String allowHeaders = BundleConfigProperties.getProperty("Access-Control-Allow-Headers", "Authorization,Accept,Cookies,Content-Type,Content-Length");
+        final String allowMethods = BundleConfigProperties.getProperty("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,OPTIONS");
+
+        response.addHeader("Access-Control-Allow-Origin", allowOrigin);
+        response.addHeader("Access-Control-Allow-Headers", allowHeaders);
+        response.addHeader("Access-Control-Allow-Methods", allowMethods);
+
         return new Result.Builder()
-                        .next()
-                        .wrap(new AddTokenHttpRequestWrapper(request, token))
-                        .wrap(new AddCorsHeaderResponse(response))
-                        .build();
-
+                .next()
+                .wrap(new AddCorsHeaderResponse(response))
+                .build();
     }
-
 
     private boolean uriMatches(HttpServletRequest request) {
         return (matchPattern.matcher(request.getRequestURI()).find());
     }
-    private boolean noAuthorization(HttpServletRequest request) {
-        return request.getHeader("Authorization")!=null;
-    }
-    
+
     public void destroy() {
         System.out.println("ApiFacadeInterceptor Filter Destroyed");
     }
-
-
-
 }
